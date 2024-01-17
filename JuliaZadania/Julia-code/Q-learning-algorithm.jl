@@ -10,10 +10,10 @@ include("Q_learning_agent.jl")
 function runQ_learning(env)
     Q_Rewards = Float64[]
     
-    alpha, gamma, epsilon = 0.1, 0.95, 0.1
+    alpha, gamma, epsilon = 0.1, 1, 0.05
     agent = QLearningAgent(env, alpha, gamma, epsilon)
         
-    for episode in 1:20000
+    for episode in 1:100000
         episode_reward = 0
 
         state = env.reset()
