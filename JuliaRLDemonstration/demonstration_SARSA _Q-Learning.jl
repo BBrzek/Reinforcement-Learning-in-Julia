@@ -204,7 +204,7 @@ create_agent(α, method) = Agent(
 		),
 		explorer=EpsilonGreedyExplorer(0.1)
 	),
-	trajectory = CircularVectorSARTTrajectory(capacity=50)
+	trajectory = CircularVectorSARTTrajectory(capacity=100)
 )
 
 # ╔═╡ 5b2bf55f-0577-4008-b78a-eb48d1206df3
