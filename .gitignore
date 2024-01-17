@@ -1,3 +1,11 @@
+#Main
 .ipynb_checkpoints/
+__pycache__
+
+#InProgress
 InProgress/.ipynb_checkpoints/
+InProgress/__pycache__/
+
+#JuliaRLDemonstration
 JuliaRLDemonstration/.ipynb_checkpoints/
+JuliaRLDemonstration/__pycache__/
