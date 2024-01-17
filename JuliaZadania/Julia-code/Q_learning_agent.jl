@@ -111,7 +111,9 @@ end
 """
     get_action(agent::QLearningAgent, state)
 
-    Determines an action for a Q-learning agent based on the epsilon-greedy policy.
+    Determines an action for a Q-learning agent based on the epsilon-greedy policy. 
+    The choice of "action-1" was made due to indexing in Julia.
+ 
 
     Parameters:
     - `agent::QLearningAgent`: The Q-learning agent for which to select an action.
@@ -149,16 +151,15 @@ end
 
 """
 function update(agent::QLearningAgent, state, action, reward, next_state)
-    # Zwiększ indeksy action i next_action o 1 dla zgodności z indeksowaniem w Julii
-    julia_action = action + 1
-
     td_target = reward + agent.gamma * maximum(agent.Q_est[next_state+1])
-    td_error = td_target - agent.Q_est[state+1, julia_action]
-    agent.Q_est[state+1, julia_action] += agent.alpha * td_error
+    td_error = td_target - agent.Q_est[state+1, action+1]
+        
+    agent.Q_est[state+1, action+1] += agent.alpha * td_error
 end
 
+    
 """
-    save(agent::QLearningAgent, path="./QLearning_Q_est.csv")
+    save(agent::QLearningAgent, path="./Julia-code/result/QLearning_Q_est.csv")
 
     Saves the estimated Q-values of a Q-learning agent to a CSV file.
 
@@ -167,14 +168,13 @@ end
     - `path::String`: The file path where the Q-values will be saved (default: "./QLearning_Q_est.csv").
 
 """
-function save(agent::QLearningAgent, path="./QLearning_Q_est.csv")
+function save(agent::QLearningAgent, path="./Julia-code/result/QLearning_Q_est.csv")
     CSV.write(path, DataFrame(agent.Q_est, :auto))
 end
 
         
-        
 """
-    load(agent::QLearningAgent, path="./QLearning_Q_est.csv")
+    load(agent::QLearningAgent, path="./Julia-code/result/QLearning_Q_est.csv")
 
     Loads Q-values from a CSV file into a Q-learning agent.
 
@@ -182,25 +182,16 @@ end
     - `agent::QLearningAgent`: The Q-learning agent to load the Q-values into.
     - `path::String`: The file path from which to load the Q-values (default: "./QLearning_Q_est.csv").
 
-"""
-function load(agent::QLearningAgent, path="./QLearning_Q_est.csv")
+
+function load(agent::QLearningAgent, path="./Julia-code/result/QLearning_Q_est.csv")
     Q_est_dataframe = CSV.File(path) |> DataFrame
     agent.Q_est = Matrix(Q_est_dataframe)
 end
-
+"""
         
-"""
-    load(agent::QLearningAgent, path="./QLearning_Q_est.csv")
-
-    Loads Q-values from a CSV file into a Q-learning agent.
-
-    Parameters:
-    - `agent::QLearningAgent`: The Q-learning agent to load the Q-values into.
-    - `path::String`: The file path from which to load the Q-values (default: "./QLearning_Q_est.csv").
-
-"""
+     
 function load_agent(env, alpha, gamma, epsilon)
-    Q_est_dataframe = CSV.File("./QLearning_Q_est.csv") |> DataFrame
+    Q_est_dataframe = CSV.File("./Julia-code/result/QLearning_Q_est.csv") |> DataFrame
     Q_est = Matrix(Q_est_dataframe)
     return QLearningAgent(env, alpha, gamma, epsilon, Q_est)
 end
