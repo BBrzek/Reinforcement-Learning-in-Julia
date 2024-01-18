@@ -43,10 +43,9 @@ parser.add_argument('-f', '--filename',
 
 
 
-def render_env(agent, env, epsilon=0.1, greedy=False):
+def render_env(agent, env, greedy=True):
     path = []
     state, info = env.reset()
-    state = state[0] if isinstance(state, tuple) else state
     states = [state]
     total_reward = 0
     total_steps = 0
@@ -56,7 +55,8 @@ def render_env(agent, env, epsilon=0.1, greedy=False):
         if greedy:
             action = Main.get_Q_est(agent)[state].argmax()
         else:
-            action = Main.get_action(state)
+            #action = Main.get_action(state)
+            1+1
             
         next_state, reward, done, truncated, info = env.step(action)
         total_reward += reward
@@ -71,7 +71,7 @@ def render_env(agent, env, epsilon=0.1, greedy=False):
 if __name__ == "__main__":
     args = parser.parse_args()
     env = gym.make(args.env, render_mode = 'human')
-    alpha, gamma, epsilon = 0.1, 0.9, 0.1
+    alpha, gamma, epsilon = 0.5, 0.9, 0.1
 
     if args.agent == 'QLearning':
         Main.include("./Julia-code/q_learning_agent.jl")
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     
     agent = Main.load_agent(env, alpha, gamma, epsilon)
 
-    states, total_reward, total_steps = render_env(agent, env, Main.get_Q_est(agent), greedy=args.greedy)
+    states, total_reward, total_steps = render_env(agent, env, greedy=True)
     print (f'Reward {total_reward} achieved in {total_steps} steps.')
     print ('States: {}'.format(states))
     

@@ -10,11 +10,11 @@ include("SARSA_agent.jl")
 function runSARSA(env)
     sarsa_Rewards = Float64[]
     
-    alpha, gamma, epsilon = 0.1, 1, 0.05
+    alpha, gamma, epsilon = 0.1, 0.95, 0.1
     agent = SarsaAgent(env, alpha, gamma, epsilon)
    
     
-    for episode in 1:100000
+    for episode in 1:50000
         episode_reward = 0
         
         state = env.reset()
@@ -29,7 +29,7 @@ function runSARSA(env)
             
             update(agent, state[1], action, reward, next_state[1], next_action)
             
-            state = next_state[1]
+            state = next_state
             action = next_action
             
             episode_reward += reward
